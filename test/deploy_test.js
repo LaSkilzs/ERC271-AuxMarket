@@ -11,10 +11,10 @@ contract("ERC271", accounts => {
       })
       .then(name => {
         assert.equal(name, "Token", "name should equal default");
-        //   return tokenInstance.symbol();
-        // })
-        // .then(symbol => {
-        //   assert.equal(symbol, "TOK", "symbol should appear");
+        return tokenInstance.symbol();
+      })
+      .then(symbol => {
+        assert.equal(symbol, "TOK", "symbol should appear");
         return tokenInstance.tokenId();
       })
       .then(tokenId => {
