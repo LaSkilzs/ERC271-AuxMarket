@@ -6,7 +6,6 @@ contract("ERC271", accounts => {
     return Token.deployed()
       .then(instance => {
         tokenInstance = instance;
-        console.log("result", tokenInstance.methods);
         return tokenInstance.name();
       })
       .then(name => {
@@ -15,20 +14,20 @@ contract("ERC271", accounts => {
       })
       .then(symbol => {
         assert.equal(symbol, "TOK", "symbol should appear");
-        return tokenInstance.tokenId();
+        return tokenInstance.totalSupply();
       })
-      .then(tokenId => {
-        assert.equal(tokenId.toNumber(), tokenId, "id should appear");
+      .then(tokens => {
+        assert.equal(tokens.toNumber(), 10000000, "tokens should equal 1");
       });
   });
-  it("sets initial value on deployment of  balanceOf to 1", async () => {
+  it("sets admin balanceOf to totalSupply count of 1000000", async () => {
     return Token.deployed()
       .then(instance => {
         tokenInstance = instance;
-        return tokenInstance.balanceOf(tokenInstance.address);
+        return tokenInstance.balanceOf(accounts[0]);
       })
       .then(balance => {
-        assert.equal(balance.toNumber(), 0, "initial balanceOf 1");
+        assert.equal(balance.toNumber(), 10000000, "initial balanceOf 1");
       });
   });
   it("should identify the owner of the contract by contract tokenId", async () => {
@@ -39,7 +38,7 @@ contract("ERC271", accounts => {
         return tokenInstance.tokenId();
       })
       .then(tokenId => {
-        return tokenInstance.owners(tokenId);
+        return tokenInstance.ownerOf(tokenId);
       })
       .then(id => {
         assert.equal(id, owner, "owner is the same");
